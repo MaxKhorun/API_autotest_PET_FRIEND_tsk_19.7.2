@@ -3,7 +3,7 @@ from api_catalog import PetFriends
 from settings import login_email, login_pass
 
 pf = PetFriends()
-
+'''тест с получением ключа с сервера для работы с прочими АПИ-командами'''
 def test_api_key_for_valid_user(email=login_email, passw=login_pass):
     status, result = pf.get_api_key(email, passw)
     assert status == 200
@@ -26,7 +26,6 @@ def test_post_new_pet(name='Viktor', pet_type='Canary', age='4', pet_photo='imag
     assert result['name'] == name
 
 '''[DELETE] / api / pets / {pet_id} — удаление питомца из базы данных;'''
-
 def test_delete_pet():
     _, auth_key = pf.get_api_key(login_email, login_pass)
     _, my_pets = pf.get_list_of_pest(auth_key, 'my_pets')
