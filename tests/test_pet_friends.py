@@ -88,13 +88,13 @@ def test_NEG_get_petlist_wth_WRONG_auth_key(filter='my_pets'):
     status, result = pf.get_list_of_pest(auth_key, filter)
     assert status == 403
 
-'wrong filter'
+'400 wrong filter'
 def test_NEG_get_petlist_wth_WRONG_data(filter='my_pets_'):
     _, auth_key = pf.get_api_key(login_email, login_pass)
     status, result = pf.get_list_of_pest(auth_key, filter)
     assert status == 500
 
-'''Длина поля заголовка'''
+'''400 Длина поля заголовка'''
 def test_NEG_get_petlist_HDRS_TO_LONG(filter='my_pets'):
     _, auth_key = pf.get_api_key(login_email, login_pass)
     auth_key['key'] = auth_key['key'] * 150
@@ -112,7 +112,7 @@ def test_NEG_post_new_pet_wth_WRONG_key(name='Viktor', pet_type='Canary', age='4
     auth_key['key'] = auth_key['key'] + 'r'
     status, result = pf.post_newPet(auth_key, name, pet_type, age, pet_photo)
     assert status == 403
-'''200 - empty data except photo'''
+'''400 - empty data except photo'''
 @pytest.mark.xfail
 def test_NEG_post_new_pet_NODATA_photoOK(name='',
         pet_type='', age='', pet_photo='images\DSC_0810.jpg'):
@@ -134,7 +134,7 @@ def test_NEG_post_new_pet_INFINITE_nsme(name='vitya'*20000,
     status, result = pf.post_newPet(auth_key, name, pet_type, age, pet_photo)
     assert status == 400
 
-'''200 - empty data, wrong file for photo'''
+'''400 - empty data, wrong file for photo'''
 @pytest.mark.xfail
 def test_NEG_post_new_pet_NODATA_DOCfile(name='', pet_type='', age='', pet_photo='images\codes.docx'):
 
