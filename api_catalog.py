@@ -106,7 +106,7 @@ class PetFriends:
             result = res.text
         print(result)
         return status, result
-    def upload_photo(self, auth_key: json, pet_ID: int, pet_photo: str) -> json:
+    def upload_photo(self, auth_key: json, pet_ID: str, pet_photo: str) -> json:
 
         data = MultipartEncoder(
             fields = {
@@ -125,4 +125,24 @@ class PetFriends:
         except:
             result = res.text
         print(result)
+        return status, result
+    def put_info_update_pet(self, auth_key: json, pet_ID: str, name: str, pet_type:str, age:str):
+
+        header = {
+            'accept': 'application/json',
+            'auth_key': auth_key['key']
+        }
+        data = {
+            'name': name,
+            'animal_type': pet_type,
+            'age': age
+        }
+
+        res = requests.put(self.base_url+f'api/pets/{pet_ID}', headers=header, data=json.dumps(data))
+        status = res.status_code
+        result = ''
+        try:
+            result = res.json()
+        except:
+            result = res.text
         return status, result
