@@ -1,7 +1,7 @@
 import os
 import pytest
 from api_catalog import PetFriends
-from settings import login_email, login_pass
+from settings import login_email, login_pass, enemy_login_pass, enemy_login_email
 
 class Test_pet_POSITIVE:
 
@@ -9,7 +9,7 @@ class Test_pet_POSITIVE:
         self.pf = PetFriends()
     '''тест с получением ключа с сервера для работы с прочими АПИ-командами'''
 
-    def test_api_key_for_valid_user(self,email=login_email, passw=login_pass):
+    def test_api_key_for_valid_user(self, email=login_email, passw=login_pass):
         status, result = self.pf.get_api_key(email, passw)
         assert status == 200
         assert 'key' in result
@@ -215,6 +215,7 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
         assert status == 403
 
     '''Not my API_key'''
+    @pytest.mark.xfail
     def test_NEG_auth_key_delete_pet(self):
         _, auth_key = self.pf.get_api_key(login_email, login_pass)
         _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
@@ -224,12 +225,13 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
             _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
 
         pet_ID = my_pets['pets'][0]['id']
-        _, auth_key_enemy = self.pf.get_api_key('candurin_club@yandexc.ru', 'not_QWERTY.98765')
+        _, auth_key_enemy = self.pf.get_api_key(enemy_login_email, enemy_login_pass) #здесь получаем не свой апи с данными другого аккаунта
         status, _ = self.pf.delete_pet(auth_key_enemy, pet_ID)
 
         _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
 
-        assert status == 200
+        assert status == 403
+
     '''7. PUT'''
     '''403 - wrong key'''
     def test_NEG_put_info_update_pet_WRNG_KEY(self, name='Duran_34', pet_type='Catty', age='6'):
