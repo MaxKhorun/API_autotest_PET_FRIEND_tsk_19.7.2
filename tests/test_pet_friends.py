@@ -1,7 +1,7 @@
 import os
 import pytest
-from ..api_catalog import PetFriends
-from ..settings import login_email, login_pass
+from api_catalog import PetFriends
+from settings import login_email, login_pass
 
 class Test_pet_POSITIVE:
 
@@ -214,6 +214,22 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
 
         assert status == 403
 
+    '''Not my API_key'''
+    def test_NEG_auth_key_delete_pet(self):
+        _, auth_key = self.pf.get_api_key(login_email, login_pass)
+        _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
+
+        if len(my_pets['pets']) == 0:
+            self.pf.post_newPet(auth_key, 'Some_pet_to_test', 'Canary', '3', 'images\kenar-vitek.jpg')
+            _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
+
+        pet_ID = my_pets['pets'][0]['id']
+        _, auth_key_enemy = self.pf.get_api_key('candurin_club@yandexc.ru', 'not_QWERTY.98765')
+        status, _ = self.pf.delete_pet(auth_key_enemy, pet_ID)
+
+        _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
+
+        assert status == 200
     '''7. PUT'''
     '''403 - wrong key'''
     def test_NEG_put_info_update_pet_WRNG_KEY(self, name='Duran_34', pet_type='Catty', age='6'):

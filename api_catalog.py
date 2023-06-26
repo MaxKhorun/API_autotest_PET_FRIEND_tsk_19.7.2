@@ -1,4 +1,3 @@
-import os
 import requests
 import json
 from requests_toolbelt.multipart.encoder import MultipartEncoder
@@ -84,7 +83,8 @@ class PetFriends:
             result = res.text
         print(result)
         return status, result
-    def create_simple_pet(self, auth_key: json, name: str, pet_type:str, age:str):
+    def create_simple_pet(self, auth_key: json, name: str, pet_type:str, age:str) -> json:
+        '''Метод создаёт простого питомца без фотографии. Принмает имя, тип питомца, возроаст'''
         data = MultipartEncoder(
             fields={
                 'name': name,
@@ -107,6 +107,7 @@ class PetFriends:
         print(result)
         return status, result
     def upload_photo(self, auth_key: json, pet_ID: str, pet_photo: str) -> json:
+        '''Метод загружает фотографию к созданному питомцу. Передаёт ключ АПИ, ай-ди питомца и фото'''
 
         data = MultipartEncoder(
             fields = {
@@ -126,7 +127,9 @@ class PetFriends:
             result = res.text
         print(result)
         return status, result
-    def put_info_update_pet(self, auth_key: json, pet_ID: str, name: str, pet_type:str, age:str):
+    def put_info_update_pet(self, auth_key: json, pet_ID: str, name: str, pet_type:str, age:str) -> json:
+        '''Метод обновляет данные конкретног питомца. Принимает ключ АПИ, айди питомца и новые данные:
+        имя, тип питомца, возраст'''
 
         header = {
             'accept': 'application/json',
