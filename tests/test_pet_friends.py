@@ -95,11 +95,10 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
     def test_NEG_api_key_for_WRONG_pass(self, email=login_email, passw=login_pass + '2'):
         status, result = self.pf.get_api_key(email, passw)
         assert status == 403
+    @pytest.mark.skip
     def test_every_key_the_same(self, email):
         pass
         '''PET_list'''
-
-
 
     '''2. PETLIST'''
     '''403 - wrong key'''
