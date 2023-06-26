@@ -22,7 +22,7 @@ class PetFriends:
             result = res.json()
         except:
             result = res.text
-        print(result)
+        print(email, '\n', password,'\n', result)
         return status, result
         pass
     def get_list_of_pest(self, auth_key: json, filter: str) -> json:

@@ -13,6 +13,20 @@ class Test_pet_POSITIVE:
         status, result = self.pf.get_api_key(email, passw)
         assert status == 200
         assert 'key' in result
+
+    '''Получение ключа от другого аккаунта'''
+    def test_api_key_for_ENEMY_user(self, email=enemy_login_email, passw=enemy_login_pass):
+        status, result = self.pf.get_api_key(email, passw)
+        assert status == 200
+        assert 'key' in result
+    '''Првоерка, что ключи разные'''
+    def test_api_key_if_keys_DIFFER(self, email=login_email, passw=login_pass,
+                                    enemy_login=enemy_login_email, enemy_passw=enemy_login_pass):
+        status_1, api_key_1 = self.pf.get_api_key(email, passw)
+        status_2, api_key_2 = self.pf.get_api_key(enemy_login, enemy_passw)
+        # assert status_1, status_2 == 200
+        assert api_key_2 != api_key_1
+
     def test_get_petlist_wth_auth_key(self, filter='my_pets'):
         _, auth_key = self.pf.get_api_key(login_email, login_pass)
         status, result = self.pf.get_list_of_pest(auth_key, filter)
@@ -81,8 +95,11 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
     def test_NEG_api_key_for_WRONG_pass(self, email=login_email, passw=login_pass + '2'):
         status, result = self.pf.get_api_key(email, passw)
         assert status == 403
-
+    def test_every_key_the_same(self, email):
+        pass
         '''PET_list'''
+
+
 
     '''2. PETLIST'''
     '''403 - wrong key'''
@@ -130,7 +147,7 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
 
     '''400 - infinite name'''
     @pytest.mark.xfail
-    def test_NEG_post_new_pet_INFINITE_nsme(self, name='vitya' * 20000,
+    def test_NEG_post_new_pet_INFINITE_name(self, name='vitya' * 20000,
                                             pet_type='', age='', pet_photo='images\DSC_0810.jpg'):
 
         pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
@@ -216,7 +233,7 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
 
     '''Not my API_key'''
     @pytest.mark.xfail
-    def test_NEG_auth_key_delete_pet(self):
+    def test_NEG_auth_key_delete_pet_ENEMY_KEY(self):
         _, auth_key = self.pf.get_api_key(login_email, login_pass)
         _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
 
@@ -225,9 +242,10 @@ class Test_pet_NEGATIVE(Test_pet_POSITIVE):
             _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
 
         pet_ID = my_pets['pets'][0]['id']
-        _, auth_key_enemy = self.pf.get_api_key(enemy_login_email, enemy_login_pass) #здесь получаем не свой апи с данными другого аккаунта
-        status, _ = self.pf.delete_pet(auth_key_enemy, pet_ID)
+        _, auth_key = self.pf.get_api_key(enemy_login_email, enemy_login_pass) #здесь получаем не свой апи с данными другого аккаунта
+        status, _ = self.pf.delete_pet(auth_key, pet_ID)
 
+        _, auth_key = self.pf.get_api_key(login_email, login_pass)
         _, my_pets = self.pf.get_list_of_pest(auth_key, 'my_pets')
 
         assert status == 403
