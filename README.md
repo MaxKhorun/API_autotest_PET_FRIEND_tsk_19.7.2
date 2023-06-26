@@ -7,6 +7,18 @@ testing API
 Описание тестов находится в папке: \PET_API_autotest\tests\test_pet_friends.py
 Тестовые данные в виде картинок для загрузки в базу: \PET_API_autotest\tests\images
 
+
+Результат получения основного ключа.
+PASSED [100%]sea-of-max@yandex.ru
+ Seemann
+ {'key': 'a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf'}
+
+Результат получения вражеского ключа:
+ PASSED [100%]candurin.club@yandex.ru
+ not_QWERTY.98765
+ {'key': '77399c1a2b640b329cd426ad6fa3aaa0300d9f106540fe97b050219a'}
+Running POSITIVE tests
+
 Каталог тестов:
 Positive_BLOCK:
 
