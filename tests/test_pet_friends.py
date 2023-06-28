@@ -42,7 +42,7 @@ class Test_pet_POSITIVE:
         assert result['name'] == name
     def test_new_pet_wtht_photo(self, name='Duran_12', pet_type='Cat', age='4'):
 
-        _, auth_key = self.pf.get_api_key(login_email, login_pass)
+        _, auth_key = self.pf.get_api_key(login_email, login_pass) #ilufvbhuierbhfvuiawerbhvnuiah78689679::":@*&^@^&E$$%^#
         status, result = self.pf.create_simple_pet(auth_key, name, pet_type, age)
 
         assert status == 200
