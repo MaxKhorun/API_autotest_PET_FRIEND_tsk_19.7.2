@@ -32,7 +32,7 @@ class Test_pet_POSITIVE:
         status, result = self.pf.get_list_of_pest(auth_key, filter)
         assert status == 200
         assert len(result['pets']) > 0
-    def test_post_new_pet(self, name='Viktor', pet_type='Canary', age='4', pet_photo='images\kenar-vitek.jpg'):
+    def test_post_new_pet(self, name='5', pet_type='Canary', age='4', pet_photo='images\kenar-vitek.jpg'):
 
         pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
 
@@ -40,7 +40,7 @@ class Test_pet_POSITIVE:
         status, result = self.pf.post_newPet(auth_key, name, pet_type, age, pet_photo)
         assert status == 200
         assert result['name'] == name
-    def test_new_pet_wtht_photo(self, name='Duran_12', pet_type='Cat', age='4'):
+    def test_new_pet_wtht_photo(self, name='Катерпиллар', pet_type='Cat', age='4'):
 
         _, auth_key = self.pf.get_api_key(login_email, login_pass)
         status, result = self.pf.create_simple_pet(auth_key, name, pet_type, age)
@@ -89,7 +89,7 @@ class Test_pet_POSITIVE:
 class Test_pet_NEGATIVE(Test_pet_POSITIVE):
 
     '''1. API'''
-    def test_NEG_api_key_for_WRONG_email(self, email='gfhfh@mail.com', passw=login_pass):
+    def test_NEG_api_key_for_WRONG_email(self, email='', passw=login_pass):
         status, result = self.pf.get_api_key(email, passw)
         assert status == 403
     def test_NEG_api_key_for_WRONG_pass(self, email=login_email, passw=login_pass + '2'):
