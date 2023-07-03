@@ -24,13 +24,13 @@ class PetFriends:
             result = res.text
         print(email, '\n', password,'\n', result)
         return status, result
-        pass
+
     def get_list_of_pest(self, auth_key: json, filter: str) -> json:
         """Метод отправляет завпрос к API с ключом пользователя и возварщает спсиок питомцев с учётом
         параметров filter"""
         header = {
             'accept': 'application/json',
-            'auth_key': auth_key['key']
+            'auth_key': auth_key
         }
         filter = {
             'filter': filter
@@ -42,7 +42,7 @@ class PetFriends:
             result = res.json()
         except:
             result = res.text
-        print(result)
+        # print(result)
         return status, result
     def post_newPet(self, auth_key: json, name: str, pet_type: str, age: str, pet_photo: str) -> json:
         ''''Добавляет питомца через отправку запроса к API;
@@ -56,7 +56,7 @@ class PetFriends:
                 'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg')
             })
         headers = {'accept': 'application/json',
-                   'auth_key': auth_key['key'],
+                   'auth_key': auth_key,
                    'Content-Type': data.content_type}
 
         res = requests.post(self.base_url+'api/pets', headers=headers, data=data)
@@ -66,13 +66,13 @@ class PetFriends:
             result = res.json()
         except:
             result = res.text
-        print(result)
+        # print(result)
         return status, result
     def delete_pet(self, auth_key: json, pet_ID: str) -> json:
         '''Метод удаляет питомца. Принмает ID, также нужен уникальный API_key'''
         header = {
             'accept' : 'application/json',
-            'auth_key': auth_key['key']
+            'auth_key': auth_key
         }
         res = requests.delete(self.base_url + f'api/pets/{pet_ID}', headers=header)
         status = res.status_code
@@ -93,7 +93,7 @@ class PetFriends:
             })
         header = {
             'accept': 'application/json',
-            'auth_key': auth_key['key'],
+            'auth_key': auth_key,
             'Content-Type': data.content_type
         }
 
@@ -114,7 +114,7 @@ class PetFriends:
                 'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg')
             })
         header = {'accept': 'application/json',
-                   'auth_key': auth_key['key'],
+                   'auth_key': auth_key,
                    'Content-Type': data.content_type
                   }
         res = requests.post(self.base_url + f'api/pets/set_photo/{pet_ID}',
@@ -125,7 +125,7 @@ class PetFriends:
             result = res.json()
         except:
             result = res.text
-        print(result)
+        # print(result)
         return status, result
     def put_info_update_pet(self, auth_key: json, pet_ID: str, name: str, pet_type:str, age:str) -> json:
         '''Метод обновляет данные конкретног питомца. Принимает ключ АПИ, айди питомца и новые данные:
@@ -133,7 +133,7 @@ class PetFriends:
 
         header = {
             'accept': 'application/json',
-            'auth_key': auth_key['key']
+            'auth_key': auth_key
         }
         data = {
             'name': name,
