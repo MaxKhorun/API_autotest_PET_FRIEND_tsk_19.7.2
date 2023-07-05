@@ -5,7 +5,7 @@ from api_catalog import PetFriends
 from settings import login_email, login_pass
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope="class", autouse=False)
 def get_apikey():
     status, result = PetFriends().get_api_key(email=login_email, password=login_pass)
     assert status == 200
@@ -32,4 +32,4 @@ def time_for_test():
     start_time = datetime.now()
     yield
     end_time = datetime.now()
-    print(f'\nВремя выполнеия теста: {end_time - start_time}')
+    print(f'\nВремя выполнения теста: {end_time - start_time}')
