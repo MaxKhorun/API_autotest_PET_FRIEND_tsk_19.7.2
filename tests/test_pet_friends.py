@@ -3,6 +3,13 @@ import pytest
 from api_catalog import PetFriends
 from settings import login_email, login_pass, enemy_login_pass, enemy_login_email
 
+# def logger(func):
+#     def wrapper(*args):
+#         file_cont = (f'<{func.__name__}>  <{args}> \n')
+#         with open('log.txt', 'a', encoding='utf-8') as file:
+#             file.write(file_cont)
+#         return func(*args)
+#     return wrapper
 
 @pytest.mark.apikey
 class TestStartBasicApiKey:

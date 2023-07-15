@@ -4,24 +4,14 @@ import datetime
 import functools
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-def decor_logger(func):
-    @functools.wraps(func)
-    def wrap_logger(*args, **kwargs):
-        resp = func(*args, **kwargs)
-        resp_head = resp.request.headers
-        resp_data = resp.request.content
+def logger(func):
+    def wrapper(*args):
+        file_cont = (f'<{func.__name__}>  <{args}> \n')
+        with open('log.txt', 'a', encoding='utf-8') as file:
+            file.write(file_cont)
+        return func(*args)
+    return wrapper
 
-        # with open('logfile.txt', 'wr', encoding='utf-8') as lf:
-        #     lf.write("Start logging",
-        #              f"\nDate/time: {datetime.now()}")
-        #     lf.write(func.__name__)
-        #     lf.write(f'Headers: {resp_head}\n')
-        #     lf.write(f'Data in request: {resp_data}\n')
-        #     lf.close()
-
-        return print(resp)
-
-    return wrap_logger
 
 class PetFriends:
     def __init__(self):
@@ -108,7 +98,7 @@ class PetFriends:
         print(result)
         return status, result
 
-    @decor_logger
+    @logger
     def create_simple_pet(self, auth_key: json, name: str, pet_type: str, age: str) -> json:
         '''Метод создаёт простого питомца без фотографии. Принмает имя, тип питомца, возроаст'''
         data = MultipartEncoder(
@@ -131,7 +121,7 @@ class PetFriends:
         except:
             result = res.text
         print(result)
-        return status, result, res
+        return status, result
 
     def upload_photo(self, auth_key: json, pet_ID: str, pet_photo: str) -> json:
         '''Метод загружает фотографию к созданному питомцу. Передаёт ключ АПИ, ай-ди питомца и фото'''
@@ -177,3 +167,24 @@ class PetFriends:
         except:
             result = res.text
         return status, result
+
+
+
+'''def decor_logger(func):
+    @functools.wraps(func)
+    def wrap_logger(*args, **kwargs):
+        resp = func(*args, **kwargs)
+        resp_head = resp.request.headers
+        resp_data = resp.request.content
+
+        # with open('logfile.txt', 'wr', encoding='utf-8') as lf:
+        #     lf.write("Start logging",
+        #              f"\nDate/time: {datetime.now()}")
+        #     lf.write(func.__name__)
+        #     lf.write(f'Headers: {resp_head}\n')
+        #     lf.write(f'Data in request: {resp_data}\n')
+        #     lf.close()
+
+        return print(resp)
+
+    return wrap_logger'''
