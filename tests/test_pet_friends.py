@@ -52,7 +52,7 @@ class TestPositiveForPets(TestStartBasicApiKey):
     @pytest.mark.event
     def test_get_petlist_wth_auth_key(self, get_api_key, filter='my_pets'):
 
-        status, result = self.pf.get_list_of_pest(get_api_key, filter)
+        _, status, result = self.pf.get_list_of_pest(get_api_key, filter)
         if len(result['pets']) == 0:
             assert status == 200
             assert len(result['pets']) == 0
@@ -77,7 +77,7 @@ class TestPositiveForPets(TestStartBasicApiKey):
     @pytest.mark.event
     def test_new_pet_wtht_photo(self, get_api_key, name='Катерпилларик', pet_type='Cat', age='7'):
 
-        status, result = self.pf.create_simple_pet(get_api_key, name, pet_type, age)
+        _, status, result = self.pf.create_simple_pet(get_api_key, name, pet_type, age)
 
         assert status == 200
         assert result['name'] == name
