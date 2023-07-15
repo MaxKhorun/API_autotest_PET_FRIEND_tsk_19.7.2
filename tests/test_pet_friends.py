@@ -1,8 +1,28 @@
 import os
 import pytest
+import functools
+import logging
 from api_catalog import PetFriends
 from settings import login_email, login_pass, enemy_login_pass, enemy_login_email
+logging.basicConfig(level=logging.INFO,
+                    filename="logfile.log")
 
+# def decor_logger(func):
+#     @functools.wraps(func)
+#     def wrap_logger(*args, **kwargs):
+#         resp = func(*args, **kwargs)
+#         resp_head = resp.requests.headers
+#         resp_data = resp.requests.content
+#         with open('logfile.txt', 'wr', encoding='utf-8') as lf:
+#             lf.write("Start logging")
+#             lf.write(func.__name__)
+#             lf.write(f'Headers: {resp_head}\n')
+#             lf.write(f'Data in request: {resp_data}\n')
+#             lf.close()
+#
+#         return resp
+#
+#     return wrap_logger
 
 @pytest.mark.apikey
 class TestStartBasicApiKey:
@@ -31,34 +51,31 @@ class TestStartBasicApiKey:
         status_2, api_key_2 = self.pf.get_api_key(enemy_login, enemy_passw)
         # assert status_1, status_2 == 200
         assert api_key_2 != api_key_1
-@pytest.mark.usefixtures("get_apikey")
-class TestPositive(TestStartBasicApiKey):
-
 
     @pytest.mark.api
     @pytest.mark.event
-    def test_get_petlist_wth_auth_key(self, get_apikey, filter='my_pets'):
+    def test_get_petlist_wth_auth_key(self, get_auth_key, filter='my_pets'):
 
-        status, result = self.pf.get_list_of_pest(get_apikey, filter)
+        status, result = self.pf.get_list_of_pest(get_auth_key, filter)
         assert status == 200
         assert len(result['pets']) > 0
 
     @pytest.mark.api
     @pytest.mark.event
-    def test_post_new_pet(self, get_apikey, name='5', pet_type='Canary',
+    def test_post_new_pet(self, get_auth_key, name='5', pet_type='Canary',
                           age='4', pet_photo='images\kenar-vitek.jpg'):
 
         pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
 
-        status, result = self.pf.post_newPet(get_apikey, name, pet_type, age, pet_photo)
+        status, result = self.pf.post_newPet(get_auth_key, name, pet_type, age, pet_photo)
         assert status == 200
         assert result['name'] == name
 
     @pytest.mark.api
     @pytest.mark.event
-    def test_new_pet_wtht_photo(self, get_apikey, name='Катерпилларик', pet_type='Cat', age='4'):
+    def test_new_pet_wtht_photo(self, get_api_key, name='Катерпилларик', pet_type='Cat', age='4'):
 
-        status, result = self.pf.create_simple_pet(get_apikey, name, pet_type, age)
+        status, result = self.pf.create_simple_pet(get_api_key, name, pet_type, age)
 
         assert status == 200
         assert result['name'] == name
