@@ -1,7 +1,27 @@
 import requests
 import json
+import datetime
+import functools
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
+def decor_logger(func):
+    @functools.wraps(func)
+    def wrap_logger(*args, **kwargs):
+        resp = func(*args, **kwargs)
+        resp_head = resp.request.headers
+        resp_data = resp.request.content
+
+        # with open('logfile.txt', 'wr', encoding='utf-8') as lf:
+        #     lf.write("Start logging",
+        #              f"\nDate/time: {datetime.now()}")
+        #     lf.write(func.__name__)
+        #     lf.write(f'Headers: {resp_head}\n')
+        #     lf.write(f'Data in request: {resp_data}\n')
+        #     lf.close()
+
+        return print(resp)
+
+    return wrap_logger
 
 class PetFriends:
     def __init__(self):
@@ -43,7 +63,8 @@ class PetFriends:
             result = res.json()
         except:
             result = res.text
-        # print(result)
+        # print(f"\nДлина списка питомцев: {len(result['pets'])}, \n", result)
+        print(result)
         return status, result
 
     def post_newPet(self, auth_key: json, name: str, pet_type: str, age: str, pet_photo: str) -> json:
@@ -87,6 +108,7 @@ class PetFriends:
         print(result)
         return status, result
 
+    @decor_logger
     def create_simple_pet(self, auth_key: json, name: str, pet_type: str, age: str) -> json:
         '''Метод создаёт простого питомца без фотографии. Принмает имя, тип питомца, возроаст'''
         data = MultipartEncoder(
@@ -109,7 +131,7 @@ class PetFriends:
         except:
             result = res.text
         print(result)
-        return status, result
+        return status, result, res
 
     def upload_photo(self, auth_key: json, pet_ID: str, pet_photo: str) -> json:
         '''Метод загружает фотографию к созданному питомцу. Передаёт ключ АПИ, ай-ди питомца и фото'''
