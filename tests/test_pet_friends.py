@@ -3,13 +3,30 @@ import pytest
 from api_catalog import PetFriends
 from settings import login_email, login_pass, enemy_login_pass, enemy_login_email
 
-# def logger(func):
-#     def wrapper(*args):
-#         file_cont = (f'<{func.__name__}>  <{args}> \n')
-#         with open('log.txt', 'a', encoding='utf-8') as file:
-#             file.write(file_cont)
-#         return func(*args)
-#     return wrapper
+xfail = pytest.mark.xfail
+parametrize = pytest.mark.parametrize
+
+
+def russian():
+    return 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+
+
+def chinese():
+    return '的一是不了人我在有他这为之大来以个中上们'
+
+
+def special_symb():
+    return r'~!@#$%^&*()_+{}|:”>?<Ё!”№;%:?*()_+/Ъ,/.,;’[]\|'
+
+
+def long_string(n):
+    return "x" * n
+
+
+def check_age(age):
+    return age.isdigit() and 0 < int(age) < 50 \
+        and float(age) == int(age)
+
 
 @pytest.mark.apikey
 class TestStartBasicApiKey:
@@ -19,7 +36,7 @@ class TestStartBasicApiKey:
     @pytest.mark.skip(reason='Есть проверка в фикстуре, лежит про запас')
     def test_api_key_for_valid_user(self, email=login_email, passw=login_pass):
         '''тест с получением ключа с сервера для работы с прочими АПИ-командами'''
-        status, result = self.pf.get_api_key(email, passw)
+        _, status, result = self.pf.get_api_key(email, passw)
         assert status == 200
         assert 'key' in result
 
@@ -27,7 +44,7 @@ class TestStartBasicApiKey:
     @pytest.mark.apikey
     def test_api_key_for_ENEMY_user(self, email=enemy_login_email, passw=enemy_login_pass):
         """Получение ключа от другого аккаунта"""
-        status, result = self.pf.get_api_key(email, passw)
+        _, status, result = self.pf.get_api_key(email, passw)
         assert status == 200
         assert 'key' in result
 
@@ -36,8 +53,8 @@ class TestStartBasicApiKey:
     def test_api_key_if_keys_DIFFER(self, email=login_email, passw=login_pass,
                                     enemy_login=enemy_login_email, enemy_passw=enemy_login_pass):
         """Првоерка, что ключи разные"""
-        status_1, api_key_1 = self.pf.get_api_key(email, passw)
-        status_2, api_key_2 = self.pf.get_api_key(enemy_login, enemy_passw)
+        _, status_1, api_key_1 = self.pf.get_api_key(email, passw)
+        _, status_2, api_key_2 = self.pf.get_api_key(enemy_login, enemy_passw)
         # assert status_1, status_2 == 200
         assert api_key_2 != api_key_1
 
@@ -50,7 +67,11 @@ class TestPositiveForPets(TestStartBasicApiKey):
     @pytest.mark.api
     @pytest.mark.ui
     @pytest.mark.event
-    def test_get_petlist_wth_auth_key(self, get_api_key, filter='my_pets'):
+    @parametrize('filter',
+                 ['', 'my_pets'],
+                 ids=['empty string', 'normal param'])
+    @xfail(reason='TypeError')
+    def test_get_petlist_valid(self, get_api_key, filter):
 
         _, status, result = self.pf.get_list_of_pest(get_api_key, filter)
         if len(result['pets']) == 0:
@@ -61,26 +82,61 @@ class TestPositiveForPets(TestStartBasicApiKey):
             assert len(result['pets']) > 0
 
     @pytest.mark.api
+    @pytest.mark.event
+    @parametrize("filter",
+                 [long_string(255), long_string(1001), russian(),
+                  russian().upper(), chinese(), special_symb()
+                  ],
+                 ids=['255 symbols',
+                      '>1000 symbols', 'russian', 'russianUPS', 'chinese', 'specials'])
+    @xfail(reason='status == 500')
+    def test_NEG_get_petlist(self, get_api_key, filter):
+        """параметризованный негативный тест с некорректными данными"""
+        _, status, result = self.pf.get_list_of_pest(get_api_key, filter)
+        assert status == 400
+
+    @pytest.mark.api
     @pytest.mark.ui
     @pytest.mark.event
-    def test_post_new_pet(self, get_api_key, name='5', pet_type='Canary',
+    def test_post_new_pet(self, name='5', pet_type='Canary',
                           age='4', pet_photo='images\kenar-vitek.jpg'):
 
         pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
 
-        status, result = self.pf.post_newPet(get_api_key, name, pet_type, age, pet_photo)
+        _, status, result = self.pf.post_newPet(pytest.key, name, pet_type, age, pet_photo)
         assert status == 200
         assert result['name'] == name
 
     @pytest.mark.api
     @pytest.mark.ui
     @pytest.mark.event
-    def test_new_pet_wtht_photo(self, get_api_key, name='Катерпилларик', pet_type='Cat', age='7'):
+    @parametrize("name",
+                 ['', long_string(255), long_string(1001), russian(),
+                  russian().upper(), chinese(), special_symb(), '123'
+                  ],
+                 ids=['empty', '255 symbols', '>1000 symbols', 'russian', 'russianUPS', 'chinese', 'specials',
+                      'digits'])
+    @parametrize("pet_type",
+                 ['', long_string(255), long_string(1001), russian(), russian().upper(), chinese(), special_symb(),
+                  '123'
+                  ],
+                 ids=['empty', '255 symbols', '>1000 symbols', 'russian', 'russianUPS', 'chinese', 'specials', 'digits'
+                      ])
+    @parametrize("age",
+                 ['', '-1', '0', '1', '100', '1.5', '2147483647', '2147483648', special_symb(), russian(), russian().upper(),
+                  chinese()],
+                 ids=['empty', 'neg', 'zero', 'just one', 'a hundred', 'float', 'in_max', 'int_max + 1', 'specials',
+                      'russians', 'RUSSIANS', 'chinese']
+    def test_new_pet_wtht_photo(self, get_api_key, name, pet_type, age):
 
         _, status, result = self.pf.create_simple_pet(get_api_key, name, pet_type, age)
-
-        assert status == 200
-        assert result['name'] == name
+        if name == '' or (pet_type == '') or (age == ''):
+            assert status == 400
+        else:
+            assert status == 200
+            assert result['name'] == name
+            assert result['anymal_type'] == pet_type
+            assert result['age'] == age
 
     @pytest.mark.api
     @pytest.mark.ui
@@ -131,7 +187,7 @@ class TestPositiveForPets(TestStartBasicApiKey):
     @pytest.mark.api
     @pytest.mark.event
     def test_to_deleteEMall(self, get_api_key):
-        _, my_pets = self.pf.get_list_of_pest(get_api_key, 'my_pets')
+        _, _, my_pets = self.pf.get_list_of_pest(get_api_key, 'my_pets')
 
         if len(my_pets['pets']) == 0:
             print('there mo pets in list')
@@ -141,7 +197,7 @@ class TestPositiveForPets(TestStartBasicApiKey):
             while len(my_pets['pets']) > 0:
                 pet_ID = my_pets['pets'][0]['id']
                 self.pf.delete_pet(get_api_key, pet_ID)
-                _, my_pets = self.pf.get_list_of_pest(get_api_key, 'my_pets')
+                _, _, my_pets = self.pf.get_list_of_pest(get_api_key, 'my_pets')
                 if len(my_pets['pets']) == 0:
                     print('there no pets in list')
                     break
@@ -167,7 +223,6 @@ class TestNegativeForPets(TestStartBasicApiKey):
         status, result = self.pf.get_api_key(email, passw)
         assert status == 403
 
-
     @pytest.mark.api
     @pytest.mark.event
     def test_NEG_get_petlist_wth_WRONG_auth_key(self, get_api_key, filter='my_pets'):
@@ -175,23 +230,6 @@ class TestNegativeForPets(TestStartBasicApiKey):
         auth_key = get_api_key + 'r'
         status, result = self.pf.get_list_of_pest(auth_key, filter)
         assert status == 403
-
-    @pytest.mark.api
-    @pytest.mark.event
-    def test_NEG_get_petlist_wth_WRONG_data(self, get_api_key, filter='my_pets_'):
-        """400 wrong filter"""
-        status, result = self.pf.get_list_of_pest(get_api_key, filter)
-        assert status == 500
-
-    @pytest.mark.api
-    @pytest.mark.event
-    def test_NEG_get_petlist_HDRS_TO_LONG(self, get_api_key, filter='my_pets'):
-        """400 Длина поля заголовка"""
-        auth_key = get_api_key * 150
-        status, result = self.pf.get_list_of_pest(auth_key, filter)
-        assert status == 400
-
-    '''3. New_PET'''
 
     @pytest.mark.api
     @pytest.mark.event

@@ -20,10 +20,10 @@ def request_fixt(request):
 
 @pytest.fixture(scope="class")
 def get_api_key():
-    status, result = PetFriends().get_api_key(email=login_email, password=login_pass)
+    _, status, pytest.key = PetFriends().get_api_key(email=login_email, password=login_pass)
     assert status == 200
-    assert 'key' in result
-    return result['key']
+    assert 'key' in pytest.key
+    return pytest.key['key']
 
 
 @pytest.fixture(autouse=True)
