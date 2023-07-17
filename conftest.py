@@ -19,7 +19,7 @@ def request_fixt(request):
 
 
 @pytest.fixture(scope="class")
-def get_api_key():
+def auth_key():
     _, status, pytest.key = PetFriends().get_api_key(email=login_email, password=login_pass)
     assert status == 200
     assert 'key' in pytest.key
