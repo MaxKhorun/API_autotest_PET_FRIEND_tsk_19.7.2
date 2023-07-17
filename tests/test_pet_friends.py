@@ -126,7 +126,7 @@ class TestPositiveForPets(TestStartBasicApiKey):
                  ['', '-1', '0', '1', '100', '1.5', '2147483647', '2147483648', special_symb(), russian(), russian().upper(),
                   chinese()],
                  ids=['empty', 'neg', 'zero', 'just one', 'a hundred', 'float', 'in_max', 'int_max + 1', 'specials',
-                      'russians', 'RUSSIANS', 'chinese']
+                      'russians', 'RUSSIANS', 'chinese'])
     def test_new_pet_wtht_photo(self, get_api_key, name, pet_type, age):
 
         _, status, result = self.pf.create_simple_pet(get_api_key, name, pet_type, age)
