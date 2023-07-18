@@ -1651,3 +1651,253 @@ RESPONSE DATA:
 v
 Статус ответа: 200
 Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:09:39.852049
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:12:18.456385
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:16:16.993651
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:21:18.426066
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:22:51.914248
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:45:06.937589
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:45:54.445679
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:45:54.769853
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/pets
+-----
+Method запроса: 
+<PreparedRequest [POST]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'auth_key': 'a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bfr', 'Content-Type': 'multipart/form-data; boundary=1e563c0eff7b41acabf33185ad40eee0'}
+-----
+Данные запроса: 
+<MultipartEncoder: {'name': 'Viktor', 'animal_type': 'Canary', 'age': '4', 'pet_photo': ('C:\\Users\\M.Kh\\PycharmProjects\\PET_API_autotest\\tests\\images\\kenar-vitek.jpg', <_io.BufferedReader name='C:\\Users\\M.Kh\\PycharmProjects\\PET_API_autotest\\tests\\images\\kenar-vitek.jpg'>, 'image/jpeg')}>
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 403
+Тело ответа: b'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<title>403 Forbidden</title>\n<h1>Forbidden</h1>\n<p>Please provide &#x27;auth_key&#x27; Header</p>\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:46:12.813494
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/key
+-----
+Method запроса: 
+<PreparedRequest [GET]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'email': 'sea-of-max@yandex.ru', 'password': 'Seemann'}
+-----
+Данные запроса: 
+('sea-of-max@yandex.ru', 'Seemann')
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 200
+Тело ответа: b'{"key":"a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf"}\n' 
+
+--
+--
+Тестовая сессия началась - 2023-07-18 22:46:13.172571
+
+REQUEST DATA:
+
+Путь запроса: 
+https://petfriends.skillfactory.ru/api/pets
+-----
+Method запроса: 
+<PreparedRequest [POST]>
+-----
+Заголовки запроса: 
+{'accept': 'application/json', 'auth_key': 'a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bfr', 'Content-Type': 'multipart/form-data; boundary=927ca3402b194288a5e87825e2cccc29'}
+-----
+Данные запроса: 
+<MultipartEncoder: {'name': 'Viktor', 'animal_type': 'Canary', 'age': '4', 'pet_photo': ('C:\\Users\\M.Kh\\PycharmProjects\\PET_API_autotest\\tests\\images\\kenar-vitek.jpg', <_io.BufferedReader name='C:\\Users\\M.Kh\\PycharmProjects\\PET_API_autotest\\tests\\images\\kenar-vitek.jpg'>, 'image/jpeg')}>
+
+
+RESPONSE DATA:
+|
+v
+Статус ответа: 403
+Тело ответа: b'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<title>403 Forbidden</title>\n<h1>Forbidden</h1>\n<p>Please provide &#x27;auth_key&#x27; Header</p>\n' 

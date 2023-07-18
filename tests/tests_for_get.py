@@ -18,9 +18,9 @@ class TestGEtPets:
     @parametrize('filter',
                  ['', 'my_pets'],
                  ids=['empty string', 'normal param'])
-    def test_get_petlist_valid(self, auth_key, filter):
+    def test_get_petlist_valid(self, get_api_key, filter):
 
-        _, status, result = self.pf.get_list_of_pest(auth_key, filter)
+        _, status, result = self.pf.get_list_of_pest(get_api_key, filter)
         if len(result['pets']) == 0:
             assert status == 200
             assert len(result['pets']) == 0
@@ -38,7 +38,15 @@ class TestGEtPets:
                  ids=['255 symbols',
                       '>1000 symbols', 'russian', 'russianUPS', 'chinese', 'specials'])
     @xfail(reason='status == 500')
-    def test_NEG_get_petlist(self, auth_key, filter):
+    def test_NEG_get_petlist(self, get_api_key, filter):
         """параметризованный негативный тест с некорректными данными"""
-        _, status, result = self.pf.get_list_of_pest(auth_key, filter)
+        _, status, result = self.pf.get_list_of_pest(get_api_key, filter)
         assert status == 400
+
+    @pytest.mark.api
+    @pytest.mark.event
+    def test_NEG_get_petlist_wth_WRONG_auth_key(self, get_api_key, filter='my_pets'):
+        """403 - wrong key"""
+        get_api_key = get_api_key + 'r'
+        status, result = self.pf.get_list_of_pest(auth_key, filter)
+        assert status == 403

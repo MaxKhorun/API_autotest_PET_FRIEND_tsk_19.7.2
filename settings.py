@@ -12,6 +12,9 @@ enemy_login_pass = os.getenv('enemy_login_pass')
 def russian():
     return 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 
+def english():
+    return 'qwertyuioplkjhgfdsazxcvbnm'
+
 
 def chinese():
     return '的一是不了人我在有他这为之大来以个中上们'
