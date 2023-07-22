@@ -4,6 +4,7 @@ import datetime
 import functools
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
+
 def logger(func):
     def wrapper(*args, **kwargs):
         func_res, status, f_res = func(*args, **kwargs)
@@ -20,15 +21,16 @@ def logger(func):
             file.write(f'\nСтатус ответа: {status}')
             file.write(f'\nТело ответа: {func_h.content} \n')
         return func(*args, **kwargs)
+
     return wrapper
 
 
 class PetFriends:
     def __init__(self):
-        self.base_url = 'https://petfriends.skillfactory.ru/'
+        self.base_url = r'https://petfriends.skillfactory.ru/'
 
     @logger
-    def get_api_key(self, email: str, password: str) -> json:
+    def get_apikey(self, email: str, password: str) -> json:
         """Метод отправляет запрос к API; возвращает статус и результата в установленных переменных 
         в формате json с уникальным ключом пользователя, найденным по отправленным email и password"""
 
@@ -53,7 +55,7 @@ class PetFriends:
         return req_data, status, result
 
     @logger
-    def get_list_of_pest(self, auth_key: json, filter: str) -> json:
+    def get_list_of_pets(self, auth_key: json, filter: str) -> json:
         """Метод отправляет завпрос к API с ключом пользователя и возварщает спсиок питомцев с учётом
         параметров filter"""
         headers = {
@@ -76,7 +78,7 @@ class PetFriends:
             result = res.json()
         except:
             result = res.text
-        print(f"\nДлина списка питомцев: {len(result['pets'])}, \n", result)
+        # print(f"\nДлина списка питомцев: \n", len(result['pets']))
         # print(result)
         return req_data, status, result
 
@@ -90,7 +92,7 @@ class PetFriends:
                 'name': name,
                 'animal_type': pet_type,
                 'age': age,
-                'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg')
+                'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg') if pet_photo else ''
             })
         headers = {'accept': 'application/json',
                    'auth_key': auth_key,
@@ -111,21 +113,27 @@ class PetFriends:
         # print(result)
         return req_data, status, result
 
+    @logger
     def delete_pet(self, auth_key: json, pet_ID: str) -> json:
         '''Метод удаляет питомца. Принмает ID, также нужен уникальный API_key'''
-        header = {
+        headers = {
             'accept': 'application/json',
             'auth_key': auth_key
         }
-        res = requests.delete(self.base_url + f'api/pets/{pet_ID}', headers=header)
+        res = requests.delete(self.base_url + f'api/pets/{pet_ID}', headers=headers)
         status = res.status_code
         result = ''
+        req_data = {
+            'headers': headers,
+            'data': pet_ID,
+            'api_response': res
+        }
         try:
             result = res.json()
         except:
             result = res.text
         print(result)
-        return status, result
+        return req_data, status, result
 
     @logger
     def create_simple_pet(self, auth_key: json, name: str, pet_type: str, age: str) -> json:
@@ -142,7 +150,6 @@ class PetFriends:
             'Content-Type': data.content_type
         }
 
-
         res = requests.post(self.base_url + 'api/create_pet_simple', headers=header, data=data)
         status = res.status_code
         result = ""
@@ -158,33 +165,40 @@ class PetFriends:
         print(result)
         return req_params, status, result
 
+    @logger
     def upload_photo(self, auth_key: json, pet_ID: str, pet_photo: str) -> json:
         '''Метод загружает фотографию к созданному питомцу. Передаёт ключ АПИ, ай-ди питомца и фото'''
 
         data = MultipartEncoder(
             fields={
-                'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg')
+                'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg') if pet_photo else ''
             })
-        header = {'accept': 'application/json',
-                  'auth_key': auth_key,
-                  'Content-Type': data.content_type
-                  }
+        headers = {'accept': 'application/json',
+                   'auth_key': auth_key,
+                   'Content-Type': data.content_type
+                   }
         res = requests.post(self.base_url + f'api/pets/set_photo/{pet_ID}',
-                            headers=header, data=data)
+                            headers=headers, data=data)
         status = res.status_code
         result = ""
+        req_params = {
+            'headers': headers,
+            'data': data,
+            'api_response': res
+        }
         try:
             result = res.json()
         except:
             result = res.text
         # print(result)
-        return status, result
+        return req_params, status, result
 
+    @logger
     def put_info_update_pet(self, auth_key: json, pet_ID: str, name: str, pet_type: str, age: str) -> json:
         '''Метод обновляет данные конкретног питомца. Принимает ключ АПИ, айди питомца и новые данные:
         имя, тип питомца, возраст'''
 
-        header = {
+        headers = {
             'accept': 'application/json',
             'auth_key': auth_key
         }
@@ -194,11 +208,16 @@ class PetFriends:
             'age': age
         }
 
-        res = requests.put(self.base_url + f'api/pets/{pet_ID}', headers=header, data=json.dumps(data))
+        res = requests.put(self.base_url + f'api/pets/{pet_ID}', headers=headers, data=json.dumps(data))
         status = res.status_code
         result = ''
+        req_params = {
+            'headers': headers,
+            'data': data,
+            'api_response': res
+        }
         try:
             result = res.json()
         except:
             result = res.text
-        return status, result
+        return req_params, status, result
