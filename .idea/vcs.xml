@@ -4,6 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../19.2.4" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../Study_Python_testing" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Task_25.3.1" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../Tsk_19.3.3" vcs="Git" />
   </component>
 </project>
