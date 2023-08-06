@@ -1,9 +1,7 @@
-import requests
 import json
 import datetime
-import functools
-from requests_toolbelt.multipart.encoder import MultipartEncoder
-
+from requests_toolbelt import MultipartEncoder
+import requests
 
 def logger(func):
     def wrapper(*args, **kwargs):
