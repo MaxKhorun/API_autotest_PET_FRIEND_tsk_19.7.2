@@ -221,3 +221,6 @@ class PetFriends:
         except:
             result = res.text
         return req_params, status, result
+
+
+# PetFriends.create_simple_pet('a0c37e1478f4082229bb26b283990b0883a790bd46dc99282d27e6bf', 'f', 'f', '7')

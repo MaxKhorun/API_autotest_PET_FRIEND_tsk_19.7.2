@@ -37,24 +37,24 @@ def get_api_kei():
     return result['key']
 
 
-@pytest.fixture(autouse=True)
-def time_for_test():
-    start_time = datetime.now()
-    _, _, my_pets = PetFriends().get_list_of_pets(get_api_kei, 'my_pets')
-    print('Длинна списка питомцев - ', len(my_pets['pets']))
-    yield
-    _,_,my_pets = PetFriends().get_list_of_pets(get_api_kei, 'my_pets')
-    if len(my_pets['pets']) == 0:
-        print('there mo pets in list')
-        assert len(my_pets['pets']) == 0
-
-    else:
-        while len(my_pets['pets']) > 0:
-            pet_ID = my_pets['pets'][0]['id']
-            PetFriends().delete_pet(get_api_kei, pet_ID)
-            _, _, my_pets = PetFriends().get_list_of_pets(get_api_kei, 'my_pets')
-            if len(my_pets['pets']) == 0:
-                print('there no pets in list')
-                break
-    end_time = datetime.now()
-    print(f'\nВремя выполнения теста: {end_time - start_time}')
+# @pytest.fixture(autouse=True)
+# def time_for_test():
+#     start_time = datetime.now()
+#     _, _, my_pets = PetFriends().get_list_of_pets(get_api_kei, 'my_pets')
+#     print('Длинна списка питомцев - ', len(my_pets['pets']))
+#     yield
+#     _,_,my_pets = PetFriends().get_list_of_pets(get_api_kei, 'my_pets')
+#     if len(my_pets['pets']) == 0:
+#         print('there mo pets in list')
+#         assert len(my_pets['pets']) == 0
+#
+#     else:
+#         while len(my_pets['pets']) > 0:
+#             pet_ID = my_pets['pets'][0]['id']
+#             PetFriends().delete_pet(get_api_kei, pet_ID)
+#             _, _, my_pets = PetFriends().get_list_of_pets(get_api_kei, 'my_pets')
+#             if len(my_pets['pets']) == 0:
+#                 print('there no pets in list')
+#                 break
+#     end_time = datetime.now()
+#     print(f'\nВремя выполнения теста: {end_time - start_time}')

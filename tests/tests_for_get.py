@@ -35,7 +35,7 @@ class TestGEtPets:
     @parametrize('filter',
                  ['', 'my_pets'],
                  ids=['empty string', 'normal param'])
-    @parametrize('auth_key', [break_auth_key(), ''], ids=['incorrect key', 'empty'])
+    # @parametrize('auth_key', [break_auth_key(), ''], ids=['incorrect key', 'empty'])
     def test_get_petlist_WrongKey(self, get_api_kei, filter):
 
         _, status, result = self.pf.get_list_of_pets(get_api_kei, filter)

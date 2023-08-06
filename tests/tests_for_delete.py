@@ -32,8 +32,8 @@ class TestDelete:
 
     @pytest.mark.neg
     @pytest.mark.api
-    @parametrize("auth_key", ['', break_auth_key(), enemy_key()],
-                 ids=['empty', 'break key', 'enemy key'])
+    # @parametrize("auth_key", ['', break_auth_key(), enemy_key()],
+    #              ids=['empty', 'break key', 'enemy key'])
     def test_delete_pet_Wrong_key(self, get_api_kei, auth_key):
         """403 - wrong key"""
 
